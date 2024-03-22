@@ -27,7 +27,7 @@ func main() {
 		log.Fatalf("mangaChapter error: %+v", err)
 	}
 
-	mangasFiltered, err := client.GetMangas(ctx, desume.GetMangaFilterParams("1", "15", desume.OrderUpdated, desume.KindComics, "Игры", ""))
+	mangasFiltered, err := client.GetMangas(ctx, desume.GetMangaFilterParams("1", "5", desume.OrderUpdated, desume.KindManga, "game", ""))
 	if err != nil {
 		log.Fatalf("mangasFiltered error: %+v", err)
 	}
