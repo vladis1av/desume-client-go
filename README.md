@@ -14,4 +14,4 @@ located [here](https://desu.me/help/api/).
 
 To install the library, simply
 
-`go get github.com/vladis1av/desume-client-go/v1`
+`go get github.com/vladis1av/desume-client-go@v1.0.0`
