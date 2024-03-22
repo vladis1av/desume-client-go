@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
-	"desume-client-go/desume"
 	"fmt"
 	"log"
+
+	"github.com/vladis1av/desume-client-go/desume"
 )
 
 func main() {
