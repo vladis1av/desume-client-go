@@ -32,6 +32,6 @@ type ChapterPage struct {
 
 type ChaptersList struct {
 	Chapters
-	Count int       `json:"count"`
-	List  []Chapter `json:"list"`
+	Count int       `json:"count,omitempty"`
+	List  []Chapter `json:"list,omitempty"`
 }
