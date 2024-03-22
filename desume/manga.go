@@ -2,44 +2,46 @@ package desume
 
 type MangaBase struct {
 	ID            int     `json:"id"`
-	Name          string  `json:"name"`
-	Russian       string  `json:"russian"`
-	Image         Image   `json:"image"`
 	URL           string  `json:"url"`
+	Name          string  `json:"name"`
 	Kind          string  `json:"kind"`
-	Reading       string  `json:"reading"`
-	Ongoing       int     `json:"ongoing"`
+	Image         Image   `json:"image"`
 	Anons         int     `json:"anons"`
 	Adult         int     `json:"adult"`
-	AgeLimit      string  `json:"age_limit"`
-	Status        string  `json:"status"`
-	TransStatus   string  `json:"trans_status"`
-	AiredOn       int64   `json:"aired_on"`
-	ReleasedOn    int64   `json:"released_on"`
 	Score         float64 `json:"score"`
-	ScoreUsers    int     `json:"score_users"`
 	Views         int     `json:"views"`
-	Description   *string `json:"description"`
+	Status        string  `json:"status"`
+	Russian       string  `json:"russian"`
+	Reading       string  `json:"reading"`
 	Checked       int64   `json:"checked"`
+	Ongoing       int     `json:"ongoing"`
 	Updated       int64   `json:"updated"`
+	AiredOn       int64   `json:"aired_on"`
 	Synonyms      *string `json:"synonyms"`
-	ThreadID      *int    `json:"thread_id"`
-	ShikimoriID   *int    `json:"shikimori_id"`
-	MyAnimeListID *int    `json:"myanimelist_id"`
+	AgeLimit      string  `json:"age_limit"`
+	ThreadID      *int    `json:"thread_id,omitempty"`
+	ReleasedOn    int64   `json:"released_on"`
+	ScoreUsers    int     `json:"score_users"`
+	Description   *string `json:"description"`
 	MangaDexID    *string `json:"mangadex_id"`
+	TransStatus   string  `json:"trans_status"`
+	ShikimoriID   *int    `json:"shikimori_id,omitempty"`
+	MyAnimeListID *int    `json:"myanimelist_id,omitempty"`
+}
+
+type MangaChapterPages struct {
+	Ch_curr Chapter       `json:"ch_curr,omitempty"`
+	Ch_prev Chapter       `json:"ch_prev,omitempty"`
+	Ch_next Chapter       `json:"ch_next,omitempty"`
+	List    []ChapterPage `json:"list,omitempty"`
 }
 
 type MangaChapter struct {
 	MangaBase
-	Genres       []Genre      `json:"genres"`
-	Translator   []Translator `json:"translator"`
+	Genres       []Genre           `json:"genres"`
+	Translator   []Translator      `json:"translator"`
+	Pages        MangaChapterPages `json:"pages,omitempty"`
 	ChaptersList `json:"chapters"`
-	Pages        struct {
-		Ch_curr Chapter       `json:"ch_curr"`
-		Ch_prev Chapter       `json:"ch_prev"`
-		Ch_next Chapter       `json:"ch_next"`
-		List    []ChapterPage `json:"list"`
-	} `json:"pages"`
 }
 
 type MangaInfo struct {
@@ -63,13 +65,7 @@ type MangaInfoResponse struct {
 	Response MangaInfo `json:"response"`
 }
 
-type MangaFilteredItem struct {
-	MangaBase
-	Genres   string   `json:"genres"`
-	Chapters Chapters `json:"chapters"`
-}
-
 type MangasFilteredResponse struct {
-	PageNavParams PageNavParams       `json:"pageNavParams"`
-	Response      []MangaFilteredItem `json:"response"`
+	PageNavParams PageNavParams   `json:"pageNavParams"`
+	Response      []MangaFiltered `json:"response"`
 }
