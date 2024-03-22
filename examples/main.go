@@ -32,8 +32,8 @@ func main() {
 		log.Fatalf("mangasFiltered error: %+v", err)
 	}
 
-	fmt.Printf("Manga: %+v", manga)
-	fmt.Printf("Mangas: %+v", mangas)
-	fmt.Printf("MangaChapter: %+v", mangaChapter)
-	fmt.Printf("mangasFiltered: %+v", mangasFiltered)
+	fmt.Printf("Manga: %+v\n", manga.Response.ID)
+	fmt.Printf("Mangas: %+v\n", mangas.Response[0].ID)
+	fmt.Printf("MangaChapter: %+v\n", mangaChapter.Response.ID)
+	fmt.Printf("mangasFiltered: %+v\n", mangasFiltered.Response[0].ID)
 }
