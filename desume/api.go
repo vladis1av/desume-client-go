@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
+	"strconv"
 )
 
 func (c *Client) GetMangas(ctx context.Context, params Params) (*MangasFilteredResponse, error) {
-	resp, err := c.doRequest(ctx, http.MethodGet, "", params, nil)
+	resp, err := c.sendRequest(ctx, http.MethodGet, "", params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +24,7 @@ func (c *Client) GetMangas(ctx context.Context, params Params) (*MangasFilteredR
 }
 
 func (c *Client) GetMangaById(ctx context.Context, id int) (*MangaInfoResponse, error) {
-	resp, err := c.doRequest(ctx, http.MethodGet, "", nil, nil)
+	resp, err := c.sendRequest(ctx, http.MethodGet, strconv.Itoa(id), nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -41,18 +41,14 @@ func (c *Client) GetMangaById(ctx context.Context, id int) (*MangaInfoResponse, 
 func (c *Client) GetMangaChapter(ctx context.Context, mangaId, chapterId int) (*MangaChapterResponse, error) {
 	endpoint := fmt.Sprintf("%v/chapter/%v", mangaId, chapterId)
 
-	resp, err := c.doRequest(ctx, http.MethodGet, endpoint, nil, nil)
+	resp, err := c.sendRequest(ctx, http.MethodGet, endpoint, nil, nil)
 	if err != nil {
-		log.Print("top")
 		return nil, err
 	}
-	log.Println(endpoint)
-	log.Println(resp)
 	defer resp.Body.Close()
 
 	var response MangaChapterResponse
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		log.Print("bottom")
 		return nil, err
 	}
 
