@@ -56,16 +56,20 @@ type MangaFiltered struct {
 }
 
 type MangaChapterResponse struct {
-	Response []MangaChapter `json:"response"`
+	Response MangaChapter `json:"response"`
 }
 
 type MangaInfoResponse struct {
-	Response []MangaInfo `json:"response"`
+	Response MangaInfo `json:"response"`
 }
 
-type MangasFilteredResponse struct {
-	PageNavParams PageNavParams `json:"pageNavParams"`
+type MangaFilteredItem struct {
 	MangaBase
 	Genres   string   `json:"genres"`
 	Chapters Chapters `json:"chapters"`
+}
+
+type MangasFilteredResponse struct {
+	PageNavParams PageNavParams       `json:"pageNavParams"`
+	Response      []MangaFilteredItem `json:"response"`
 }
