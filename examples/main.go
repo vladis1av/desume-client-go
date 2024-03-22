@@ -13,14 +13,27 @@ func main() {
 	client := desume.NewClient()
 
 	manga, err := client.GetMangaById(ctx, 1)
-	mangas, err := client.GetMangas(ctx, nil)
-	mangaChapter, err := client.GetMangaChapter(ctx, 1, 1)
-
 	if err != nil {
-		log.Fatalf("something went wrong: %+v", err)
+		log.Fatalf("manga error: %+v", err)
+	}
+
+	mangas, err := client.GetMangas(ctx, desume.GetDefaultMangaFilterParams())
+	if err != nil {
+		log.Fatalf("mangas error: %+v", err)
+	}
+
+	mangaChapter, err := client.GetMangaChapter(ctx, 1, 1)
+	if err != nil {
+		log.Fatalf("mangaChapter error: %+v", err)
+	}
+
+	mangasFiltered, err := client.GetMangas(ctx, desume.GetMangaFilterParams("1", "15", desume.OrderUpdated, desume.KindComics, "Игры", ""))
+	if err != nil {
+		log.Fatalf("mangasFiltered error: %+v", err)
 	}
 
 	fmt.Printf("Manga: %+v", manga)
 	fmt.Printf("Mangas: %+v", mangas)
 	fmt.Printf("MangaChapter: %+v", mangaChapter)
+	fmt.Printf("mangasFiltered: %+v", mangasFiltered)
 }
