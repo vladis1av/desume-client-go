@@ -9,16 +9,22 @@ import (
 	"path"
 )
 
+// defaultBaseURL constant defines the default API base URL that will be used by the client unless another URL is specified.
 const (
 	defaultBaseURL = "https://desu.win/manga/api/"
 )
 
+// Client structure represents the API client that will be used to send HTTP requests to the API.
 type Client struct {
 	baseURL    string
 	httpClient *http.Client
 }
 
+// Params type represents the request parameters that will be passed to the API URL.
 type Params map[string]string
+
+// Option type represents a function that can be used to configure a Client instance
+type Option func(*Client)
 
 func (a Params) toQueryParams() url.Values {
 	res := make(url.Values)
@@ -28,17 +34,14 @@ func (a Params) toQueryParams() url.Values {
 	return res
 }
 
-// Option представляет функцию для настройки клиента.
-type Option func(*Client)
-
-// WithBaseURL устанавливает базовый URL API.
+// WithBaseURL feature option sets the base API URL for the Client instance
 func WithBaseURL(baseURL string) Option {
 	return func(c *Client) {
 		c.baseURL = baseURL
 	}
 }
 
-// NewClient создает новый экземпляр клиента API.
+// NewClient creates a new instance of the API client.
 func NewClient(options ...Option) *Client {
 	client := &Client{
 		baseURL:    defaultBaseURL,
@@ -52,6 +55,7 @@ func NewClient(options ...Option) *Client {
 	return client
 }
 
+// sendRequest sends an HTTP request to the API with the specified parameters
 func (c *Client) sendRequest(ctx context.Context, method string, endpoint string, params Params, body interface{}) (*http.Response, error) {
 	if ctx == nil {
 		ctx = context.Background()

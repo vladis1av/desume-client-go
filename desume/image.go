@@ -1,5 +1,6 @@
 package desume
 
+// Image contains information about the manga covers
 type Image struct {
 	Original string `json:"original"`
 	Preview  string `json:"preview"`

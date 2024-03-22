@@ -1,5 +1,6 @@
 package desume
 
+// MangaBase contains basic information about manga.
 type MangaBase struct {
 	ID            int     `json:"id"`
 	URL           string  `json:"url"`
@@ -29,6 +30,7 @@ type MangaBase struct {
 	MyAnimeListID *int    `json:"myanimelist_id,omitempty"`
 }
 
+// MangaChapterPages contains information about the pages of the manga chapter.
 type MangaChapterPages struct {
 	Ch_curr Chapter       `json:"ch_curr,omitempty"`
 	Ch_prev Chapter       `json:"ch_prev,omitempty"`
@@ -36,6 +38,7 @@ type MangaChapterPages struct {
 	List    []ChapterPage `json:"list,omitempty"`
 }
 
+// MangaChapterPages contains information about the manga and chapters.
 type MangaChapter struct {
 	MangaBase
 	Genres       []Genre           `json:"genres"`
@@ -44,6 +47,7 @@ type MangaChapter struct {
 	ChaptersList `json:"chapters"`
 }
 
+// MangaChapterPages contains full information about the manga.
 type MangaInfo struct {
 	MangaBase
 	Genres       []Genre      `json:"genres"`
@@ -51,20 +55,27 @@ type MangaInfo struct {
 	ChaptersList `json:"chapters"`
 }
 
+// MangaFiltered contains information about the manga, filtered
+// according to the specified params.
 type MangaFiltered struct {
 	MangaBase
 	Genres   string   `json:"genres"`
 	Chapters Chapters `json:"chapters"`
 }
 
+// Manga Chapter Response is an API response containing
+// information about one chapter of the manga. Including the manga itself.
 type MangaChapterResponse struct {
 	Response MangaChapter `json:"response"`
 }
 
+// MangaInfoResponse presents an API response containing
+// detailed information about a single manga.
 type MangaInfoResponse struct {
 	Response MangaInfo `json:"response"`
 }
 
+// MangasFilteredResponse represents an API response containing a filtered list of manga.
 type MangasFilteredResponse struct {
 	PageNavParams PageNavParams   `json:"pageNavParams"`
 	Response      []MangaFiltered `json:"response"`
