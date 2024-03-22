@@ -2,7 +2,7 @@
 DesuMe
 =======
 
-[![GoDoc](https://godoc.org/github.com/zmb3/spotify?status.svg)](http://godoc.org/github.com/zmb3/spotify)
+[![GoDoc](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.0.1/desume?status.svg)](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.0.1/desume)
 
 This is a Go wrapper for working with DesuMe
 [Web API](https://desu.me/help/api/).
