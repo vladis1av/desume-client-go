@@ -15,7 +15,7 @@ func GetDefaultMangaFilterParams() map[string]string {
 	return map[string]string{
 		"limit": "1",
 		"kinds": KindManga,
-		"Order": OrderPopular,
+		"order": OrderPopular,
 	}
 }
 
