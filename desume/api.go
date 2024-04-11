@@ -4,9 +4,34 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 )
+
+func decodeResponse(r io.Reader, v interface{}) error {
+	// Создаем буфер для чтения ответа
+	body, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+
+	// Создаем структуру для ошибки
+	var errorResponse MangaError
+
+	// Пытаемся декодировать ответ в структуру ошибки
+	if err := json.Unmarshal(body, &errorResponse); err == nil && errorResponse.Error != "" {
+		// Если ошибка не пустая, то возвращаем ее
+		return fmt.Errorf(errorResponse.Error)
+	}
+
+	// Если ошибки нет, то декодируем ответ в целевую структуру
+	if err := json.Unmarshal(body, v); err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // GetMangas gets a list of manga filtered by the specified parameters.
 func (c *Client) GetMangas(ctx context.Context, params Params) (*MangasFilteredResponse, error) {
@@ -17,7 +42,7 @@ func (c *Client) GetMangas(ctx context.Context, params Params) (*MangasFilteredR
 	defer resp.Body.Close()
 
 	var response MangasFilteredResponse
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err := decodeResponse(resp.Body, &response); err != nil {
 		return nil, err
 	}
 
@@ -33,7 +58,7 @@ func (c *Client) GetMangaById(ctx context.Context, id int) (*MangaInfoResponse, 
 	defer resp.Body.Close()
 
 	var response MangaInfoResponse
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err := decodeResponse(resp.Body, &response); err != nil {
 		return nil, err
 	}
 
@@ -51,7 +76,7 @@ func (c *Client) GetMangaChapter(ctx context.Context, mangaId, chapterId int) (*
 	defer resp.Body.Close()
 
 	var response MangaChapterResponse
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err := decodeResponse(resp.Body, &response); err != nil {
 		return nil, err
 	}
 
