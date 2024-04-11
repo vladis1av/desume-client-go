@@ -41,9 +41,9 @@ type MangaChapterPages struct {
 // MangaChapterPages contains information about the manga and chapters.
 type MangaChapter struct {
 	MangaBase
-	Genres       []Genre           `json:"genres"`
-	Translator   []Translator      `json:"translator"`
-	Pages        MangaChapterPages `json:"pages,omitempty"`
+	Genres       []Genre            `json:"genres"`
+	Translator   []Translator       `json:"translator"`
+	Pages        *MangaChapterPages `json:"pages,omitempty"`
 	ChaptersList `json:"chapters"`
 }
 
