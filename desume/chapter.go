@@ -12,7 +12,7 @@ type ChapterInfo struct {
 type Chapter struct {
 	ID    int     `json:"id"`
 	Vol   int     `json:"vol"`
-	Ch    int     `json:"ch"`
+	Ch    float64 `json:"ch"`
 	Title *string `json:"title"`
 	Date  int64   `json:"date"`
 	Check int     `json:"check"`
