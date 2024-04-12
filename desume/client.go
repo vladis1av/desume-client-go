@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"time"
 )
 
 // defaultBaseURL constant defines the default API base URL that will be used by the client unless another URL is specified.
@@ -41,11 +42,55 @@ func WithBaseURL(baseURL string) Option {
 	}
 }
 
-// NewClient creates a new instance of the API client.
+// WithBaseURL feature option sets the base timeout for the Client instance
+func WithTimeout(timeout time.Duration) Option {
+	return func(c *Client) {
+		c.httpClient.Timeout = timeout
+	}
+}
+
+// WithBaseURL feature option sets the base MaxIdleConns for the Client instance
+func WithMaxIdleConns(maxIdleConns int) Option {
+	return func(c *Client) {
+		c.httpClient.Transport.(*http.Transport).MaxIdleConns = maxIdleConns
+	}
+}
+
+// WithBaseURL feature option sets the base IdleConnTimeout for the Client instance
+func WithIdleConnTimeout(idleConnTimeout time.Duration) Option {
+	return func(c *Client) {
+		c.httpClient.Transport.(*http.Transport).IdleConnTimeout = idleConnTimeout
+	}
+}
+
+func WithTLSHandshakeTimeout(tlsHandshakeTimeout time.Duration) Option {
+	return func(c *Client) {
+		c.httpClient.Transport.(*http.Transport).TLSHandshakeTimeout = tlsHandshakeTimeout
+	}
+}
+
+// WithBaseURL feature option sets the base DisableCompression for the Client instance
+func WithDisableCompression(disableCompression bool) Option {
+	return func(c *Client) {
+		c.httpClient.Transport.(*http.Transport).DisableCompression = disableCompression
+	}
+}
+
+// DESUME Client instance
 func NewClient(options ...Option) *Client {
+	httpClient := &http.Client{
+		Timeout: 15 * time.Second,
+		Transport: &http.Transport{
+			MaxIdleConns:        20,
+			IdleConnTimeout:     60 * time.Second,
+			TLSHandshakeTimeout: 5 * time.Second,
+			DisableCompression:  true,
+		},
+	}
+
 	client := &Client{
 		baseURL:    defaultBaseURL,
-		httpClient: &http.Client{},
+		httpClient: httpClient,
 	}
 
 	for _, option := range options {
