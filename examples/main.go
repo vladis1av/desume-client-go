@@ -4,13 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/vladis1av/desume-client-go/desume"
 )
 
 func main() {
 	ctx := context.Background()
-	client := desume.NewClient()
+
+	client := desume.NewClient(desume.WithTimeout(30*time.Second), desume.WithMaxIdleConns(50))
 
 	manga, err := client.GetMangaById(ctx, 1)
 	if err != nil {
@@ -27,7 +29,7 @@ func main() {
 		log.Fatalf("mangaChapter error: %+v", err)
 	}
 
-	mangasFiltered, err := client.GetMangas(ctx, desume.GetMangaFilterParams("1", "5", desume.OrderByUpdated, desume.KindManga, "game", ""))
+	mangasFiltered, err := client.GetMangas(ctx, desume.GetMangaFilterParams("1", "5", desume.OrderByUpdated, desume.KindManga, "game", "bleach"))
 	if err != nil {
 		log.Fatalf("mangasFiltered error: %+v", err)
 	}
