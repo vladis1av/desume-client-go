@@ -1,5 +1,7 @@
 package desume
 
+import "encoding/json"
+
 // MangaBase contains basic information about manga.
 type MangaBase struct {
 	ID            int     `json:"id"`
@@ -30,15 +32,51 @@ type MangaBase struct {
 	MyAnimeListID *int    `json:"myanimelist_id,omitempty"`
 }
 
-// MangaChapterPages contains information about the pages of the manga chapter.
+// MaybeChapter is a structure that can contain either a value of type Chapter or // the special value "-1" to indicate no value.
+type MaybeChapter struct {
+	Value  *Chapter
+	Exists bool
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for the MaybeChapter type.
+// // This method is used to deserialize JSON data into the Maybe Chapter structure.
+// If the JSON data is a string "-1", then Value is set to nil and Exists to false.
+// Otherwise, the JSON data is deserialized into the Chapter structure, and the reference to this structure
+// is stored in Value, and Exists is set to true.
+func (mc *MaybeChapter) UnmarshalJSON(data []byte) error {
+	if string(data) == "-1" {
+		mc.Exists = false
+		mc.Value = nil
+		return nil
+	}
+
+	var ch Chapter
+	if err := json.Unmarshal(data, &ch); err != nil {
+		return err
+	}
+	mc.Value = &ch
+	mc.Exists = true
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaler interface for the MaybeChapter type. // This method is used to serialize the MaybeChapter structure into JSON data. // If Exists is false, then the method returns the string "-1". // Otherwise, the method serializes the value contained in Value into JSON data.
+func (mc MaybeChapter) MarshalJSON() ([]byte, error) {
+	if !mc.Exists {
+		return []byte("-1"), nil
+	}
+	return json.Marshal(mc.Value)
+}
+
+// MangaChapterPages provides information about the current, previous, and next manga chapters,
+// as well as a list of pages for the current chapter.
 type MangaChapterPages struct {
 	Ch_curr Chapter       `json:"ch_curr,omitempty"`
-	Ch_prev Chapter       `json:"ch_prev,omitempty"`
-	Ch_next Chapter       `json:"ch_next,omitempty"`
+	Ch_prev MaybeChapter  `json:"ch_prev,omitempty"`
+	Ch_next MaybeChapter  `json:"ch_next,omitempty"`
 	List    []ChapterPage `json:"list,omitempty"`
 }
 
-// MangaChapterPages contains information about the manga and chapters.
+// MangaChapter contains information about the manga and chapters.
 type MangaChapter struct {
 	MangaBase
 	Genres       []Genre            `json:"genres"`
@@ -47,7 +85,7 @@ type MangaChapter struct {
 	ChaptersList `json:"chapters"`
 }
 
-// MangaChapterPages contains full information about the manga.
+// MangaInfo contains full information about the manga.
 type MangaInfo struct {
 	MangaBase
 	Genres       []Genre      `json:"genres"`
