@@ -10,22 +10,22 @@ import (
 )
 
 func decodeResponse(r io.Reader, v interface{}) error {
-	// Создаем буфер для чтения ответа
+	// Create a buffer for reading the response
 	body, err := io.ReadAll(r)
 	if err != nil {
 		return err
 	}
 
-	// Создаем структуру для ошибки
+	// Create a structure for the error
 	var errorResponse MangaError
 
-	// Пытаемся декодировать ответ в структуру ошибки
+	// Trying to decode the response into an error structure
 	if err := json.Unmarshal(body, &errorResponse); err == nil && errorResponse.Error != "" {
-		// Если ошибка не пустая, то возвращаем ее
+		// If the error is not empty, then return it
 		return fmt.Errorf(errorResponse.Error)
 	}
 
-	// Если ошибки нет, то декодируем ответ в целевую структуру
+	// If there is no error, then decode the response into the target structure
 	if err := json.Unmarshal(body, v); err != nil {
 		return err
 	}
