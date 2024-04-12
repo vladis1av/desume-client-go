@@ -2,7 +2,7 @@
 DesuMe
 =======
 
-[![GoDoc](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.0.5/desume?status.svg)](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.0.5/desume)
+[![GoDoc](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.1.0/desume?status.svg)](https://pkg.go.dev/github.com/vladis1av/desume-client-go@v1.1.0/desume)
 
 This is a Go wrapper for working with DesuMe
 [Web API](https://desu.me/help/api/).
@@ -14,4 +14,4 @@ located [here](https://desu.me/help/api/).
 
 To install the library, simply
 
-`go get github.com/vladis1av/desume-client-go@v1.0.5`
+`go get github.com/vladis1av/desume-client-go@v1.1.0`
