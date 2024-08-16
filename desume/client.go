@@ -27,6 +27,7 @@ type Client struct {
 	baseURL     string
 	httpClient  *http.Client
 	rateLimiter *rate.Limiter
+	headers     http.Header
 }
 
 // Params type represents the request parameters that will be passed to the API URL.
@@ -41,6 +42,19 @@ func (a Params) toQueryParams() url.Values {
 		res.Add(k, v)
 	}
 	return res
+}
+
+// Set Headers for requests.
+// Use if you need to set a set of headers once when creating a client and these headers will not change.
+// SetHeader can replace headers
+func WithHeaders(headers http.Header) Option {
+	return func(c *Client) {
+		for key, values := range headers {
+			for _, value := range values {
+				c.headers.Add(key, value)
+			}
+		}
+	}
 }
 
 // WithBaseURL feature option sets the base API URL for the Client instance
@@ -107,13 +121,21 @@ func NewClient(options ...Option) *Client {
 	client := &Client{
 		baseURL:    defaultBaseURL,
 		httpClient: httpClient,
+		headers:    make(http.Header),
 	}
+	client.headers.Set("User-Agent", "DesuMe-Go-Client/1.2.0") // Добавьте эту строку
 
 	for _, option := range options {
 		option(client)
 	}
 
 	return client
+}
+
+// Use if you need to dynamically change or add headers after the client is created.
+// This is suitable for cases where headers may change depending on the execution context.
+func (c *Client) SetHeader(key, value string) {
+	c.headers.Set(key, value)
 }
 
 // sendRequest sends an HTTP request to the API with the specified parameters
@@ -154,6 +176,13 @@ func (c *Client) sendRequest(ctx context.Context, method string, endpoint string
 		req, err = http.NewRequestWithContext(ctx, method, u.String(), nil)
 		if err != nil {
 			return nil, err
+		}
+	}
+
+	// Добавляем заголовки к запросу
+	for key, values := range c.headers {
+		for _, value := range values {
+			req.Header.Add(key, value)
 		}
 	}
 
