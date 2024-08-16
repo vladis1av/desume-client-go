@@ -12,12 +12,16 @@ import (
 func main() {
 	ctx := context.Background()
 
-	// Create a client with a timeout, a maximum number of idle connections, and a rate limiter
+	// Create with optional settings
 	client := desume.NewClient(
+		desume.WithBaseURL("https://desu.me/manga/api/"), // default https://desu.win/manga/api/
+		desume.WithDisableCompression(true),
+		desume.WithIdleConnTimeout(60*time.Second),
 		desume.WithTimeout(30*time.Second),
 		desume.WithMaxIdleConns(50),
-		desume.WithRateLimiter(3, 1), // Limit of 3 requests per second with burst of 1
+		desume.WithRateLimiter(3, 1),
 	)
+	// Recommended limit to prevent API blocking: // 3 requests per second with the possibility of briefly exceeding 1 request
 
 	// Getting information about manga by ID
 	manga, err := client.GetMangaById(ctx, 1)
