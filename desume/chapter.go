@@ -10,7 +10,7 @@ type ChapterInfo struct {
 
 // Chapter contains full information about the manga chapter
 type Chapter struct {
-	ID    int     `json:"id"`
+	ID    int64   `json:"id"`
 	Vol   int     `json:"vol"`
 	Ch    float64 `json:"ch"`
 	Title *string `json:"title"`
@@ -27,7 +27,7 @@ type Chapters struct {
 
 // ChapterPage contains information about the current chapter page
 type ChapterPage struct {
-	ID     int    `json:"id"`
+	ID     int64  `json:"id"`
 	Page   int    `json:"page"`
 	Width  int    `json:"width"`
 	Height int    `json:"height"`

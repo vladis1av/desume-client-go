@@ -50,8 +50,8 @@ func (c *Client) GetMangas(ctx context.Context, params Params) (*MangasFilteredR
 }
 
 // GetMangaById gets information about the manga by its ID.
-func (c *Client) GetMangaById(ctx context.Context, id int) (*MangaInfoResponse, error) {
-	resp, err := c.sendRequest(ctx, http.MethodGet, strconv.Itoa(id), nil, nil)
+func (c *Client) GetMangaById(ctx context.Context, id int64) (*MangaInfoResponse, error) {
+	resp, err := c.sendRequest(ctx, http.MethodGet, strconv.FormatInt(id, 10), nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (c *Client) GetMangaById(ctx context.Context, id int) (*MangaInfoResponse, 
 }
 
 // GetMangaChapter gets information about the manga chapter by the manga and chapter IDs.
-func (c *Client) GetMangaChapter(ctx context.Context, mangaId, chapterId int) (*MangaChapterResponse, error) {
+func (c *Client) GetMangaChapter(ctx context.Context, mangaId, chapterId int64) (*MangaChapterResponse, error) {
 	endpoint := fmt.Sprintf("%v/chapter/%v", mangaId, chapterId)
 
 	resp, err := c.sendRequest(ctx, http.MethodGet, endpoint, nil, nil)

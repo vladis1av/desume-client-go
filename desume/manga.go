@@ -4,7 +4,7 @@ import "encoding/json"
 
 // MangaBase contains basic information about manga.
 type MangaBase struct {
-	ID            int     `json:"id"`
+	ID            int64   `json:"id"`
 	URL           string  `json:"url"`
 	Name          string  `json:"name"`
 	Kind          string  `json:"kind"`
@@ -22,14 +22,14 @@ type MangaBase struct {
 	AiredOn       int64   `json:"aired_on"`
 	Synonyms      *string `json:"synonyms"`
 	AgeLimit      string  `json:"age_limit"`
-	ThreadID      *int    `json:"thread_id,omitempty"`
+	ThreadID      *int64  `json:"thread_id,omitempty"`
 	ReleasedOn    int64   `json:"released_on"`
 	ScoreUsers    int     `json:"score_users"`
 	Description   *string `json:"description"`
 	MangaDexID    *string `json:"mangadex_id"`
 	TransStatus   string  `json:"trans_status"`
-	ShikimoriID   *int    `json:"shikimori_id,omitempty"`
-	MyAnimeListID *int    `json:"myanimelist_id,omitempty"`
+	ShikimoriID   *int64  `json:"shikimori_id,omitempty"`
+	MyAnimeListID *int64  `json:"myanimelist_id,omitempty"`
 }
 
 // MaybeChapter is a structure that can contain either a value of type Chapter or // the special value "-1" to indicate no value.
