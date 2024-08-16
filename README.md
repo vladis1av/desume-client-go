@@ -23,6 +23,7 @@
 - 🛡️ Built-in rate limiting to prevent API abuse
 - 🌐 Support for all major API endpoints
 - 🎛️ Customizable request parameters
+- 📝 Ability to set and modify headers dynamically
 
 ## 📦 Installation
 
@@ -56,6 +57,23 @@ client := desume.NewClient(
 )
 ```
 
+### Setting Headers
+
+Use WithHeaders to set a set of headers when creating the client. These headers will be used in all requests and can be overridden by using SetHeader:
+
+```go
+client := desume.NewClient(
+  desume.WithHeaders(http.Header{
+    "User-Agent":      []string{"My-App/1.0"},
+    "X-Custom-Header": []string{"CustomValue"},
+  }),
+)
+```
+You can dynamically change or add headers after the client is created using SetHeader:
+
+```go
+client.SetHeader("Authorization", "Bearer token")
+```
 ### Getting Manga by ID
 
 To fetch information about a specific manga:
