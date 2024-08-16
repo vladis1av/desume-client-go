@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/vladis1av/desume-client-go/desume"
@@ -20,8 +21,15 @@ func main() {
 		desume.WithTimeout(30*time.Second),
 		desume.WithMaxIdleConns(50),
 		desume.WithRateLimiter(3, 1),
+		desume.WithHeaders(http.Header{
+			"User-Agent":      []string{"My-App/1.0"},
+			"X-Custom-Header": []string{"CustomValue"},
+		}),
 	)
 	// Recommended limit to prevent API blocking: // 3 requests per second with the possibility of briefly exceeding 1 request
+
+	// Later we add or change headers
+	client.SetHeader("X-Custom-Header", "CustomValue")
 
 	// Getting information about manga by ID
 	manga, err := client.GetMangaById(ctx, 1)
