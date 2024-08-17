@@ -52,7 +52,7 @@ client := desume.NewClient(
   desume.WithIdleConnTimeout(60*time.Second),
   desume.WithTimeout(30*time.Second),
   desume.WithMaxIdleConns(50),
-  desume.WithRateLimiter(3, 1),
+  desume.WithRateLimiter(2, 1),
 // Recommended limit to prevent API blocking: // 3 requests per second with the possibility of briefly exceeding 1 request
 )
 ```
